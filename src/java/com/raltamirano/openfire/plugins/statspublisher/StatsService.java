@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import org.jivesoftware.openfire.stats.Statistic;
 import org.jivesoftware.openfire.stats.StatisticsManager;
+import org.jivesoftware.util.JiveGlobals;
 
 @Path("statspublisher-openfire-plugin/")
 public class StatsService {
@@ -42,8 +43,7 @@ public class StatsService {
 			values.getItems().add(new StatsList.StatsItem(statsEntry.getKey(), statsEntry.getValue().sample(), statsEntry.getValue().getUnits()));
 		}		
 		
-		// TODO: remove hard-coding of the 'expiryOffset' value 
-		final long expiryOffset = 30 * 1000; // one minute of client cache!
+		final long expiryOffset = JiveGlobals.getLongProperty("statspublisher.stats.cacheTimeMillis", 30 * 1000); // Default cache time: 30 seconds
 		final long currentTime = System.currentTimeMillis();
 		
 		return Response
